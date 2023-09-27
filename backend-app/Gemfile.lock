@@ -66,6 +66,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.5)
+      public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -96,6 +98,31 @@ GEM
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
+    jsonapi-deserializable (0.2.0)
+    jsonapi-parser (0.1.1)
+    jsonapi-rails (0.4.1)
+      jsonapi-parser (~> 0.1.0)
+      jsonapi-rb (~> 0.5.0)
+    jsonapi-rb (0.5.0)
+      jsonapi-deserializable (~> 0.2.0)
+      jsonapi-serializable (~> 0.3.0)
+    jsonapi-renderer (0.2.2)
+    jsonapi-serializable (0.3.1)
+      jsonapi-renderer (~> 0.2.0)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -124,6 +151,7 @@ GEM
     pg (1.5.4)
     psych (5.1.0)
       stringio
+    public_suffix (5.0.3)
     puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.7.1)
@@ -180,6 +208,16 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
+    rswag-api (2.10.1)
+      railties (>= 3.1, < 7.1)
+    rswag-specs (2.10.1)
+      activesupport (>= 3.1, < 7.1)
+      json-schema (>= 2.2, < 4.0)
+      railties (>= 3.1, < 7.1)
+      rspec-core (>= 2.14)
+    rswag-ui (2.10.1)
+      actionpack (>= 3.1, < 7.1)
+      railties (>= 3.1, < 7.1)
     stringio (3.0.8)
     thor (1.2.2)
     timeout (0.4.0)
@@ -200,10 +238,15 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  jsonapi-rails
+  kaminari
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.8)
   rspec-rails (~> 6.0.0)
+  rswag-api
+  rswag-specs
+  rswag-ui
   tzinfo-data
 
 RUBY VERSION
