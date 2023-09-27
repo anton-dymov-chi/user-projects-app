@@ -10,6 +10,10 @@
 #  updated_at          :datetime         not null
 #
 class Employee < ApplicationRecord
-    has_many :assignment
-    has_many :project, throught: :assignment
+  has_many :assignments, as: :assignmentable
+  has_many :projects, through: :assignments
+
+  def update_total_apportionment
+    self.total_apportionment = assignments.sum(:total)
+  end
 end

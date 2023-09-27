@@ -4,7 +4,7 @@ FactoryBot.define do
     rnd_percentage { Faker::Number.decimal }
     total { Faker::Number.decimal }
 
-    employee
+    association :assignmentable, factory: :employee
     project
   end
 end

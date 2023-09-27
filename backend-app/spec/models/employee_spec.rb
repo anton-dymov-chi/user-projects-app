@@ -12,5 +12,15 @@
 require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'update total apportionment' do
+    let!(:employee) { create(:employee) }
+    let!(:assignments) { create_list(:assignment, 10, total: 10, assignmentable: employee) }
+
+    # It's needed because when we create assignments we recalculate employees total
+    before { employee.update(total_apportionment: 10) }
+
+    it 'set total_apportionment' do
+      expect{ employee.update_total_apportionment }.to change(employee, :total_apportionment).from(10).to(100)
+    end
+  end
 end

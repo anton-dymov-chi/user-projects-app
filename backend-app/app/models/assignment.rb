@@ -12,14 +12,18 @@
 #  updated_at     :datetime         not null
 #
 class Assignment < ApplicationRecord
-    before_update :update_total
+  before_update :update_total
 
-    belongs_to :employee
-    belongs_to :project
+  delegate :update_total_apportionment, to: :assignmentable
 
-    def update_total
-      if months_changed? || rnd_percentage_changed?
-        self.total = (months * rnd_percentage) / 12
-      end
+  after_save :update_total_apportionment
+
+  belongs_to :assignmentable, polymorphic: true
+  belongs_to :project
+
+  def update_total
+    if months_changed? || rnd_percentage_changed?
+      self.total = (months * rnd_percentage) / 12
     end
+  end
 end

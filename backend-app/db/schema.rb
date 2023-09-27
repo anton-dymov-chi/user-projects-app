@@ -18,12 +18,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_25_132252) do
     t.integer "months", default: 1, null: false
     t.float "rnd_percentage", default: 0.0, null: false
     t.float "total", default: 0.0, null: false
-    t.bigint "employee_id", null: false
     t.bigint "project_id", null: false
+    t.string "assignmentable_type", null: false
+    t.bigint "assignmentable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_assignments_on_employee_id", unique: true
-    t.index ["project_id"], name: "index_assignments_on_project_id", unique: true
+    t.index ["assignmentable_type", "assignmentable_id"], name: "index_assignments_on_assignmentable"
+    t.index ["project_id", "assignmentable_type", "assignmentable_id"], name: "index_assignments_on_project_id_unique_to_assignmentable", unique: true
+    t.index ["project_id"], name: "index_assignments_on_project_id"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -41,6 +43,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_25_132252) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "assignments", "employees"
   add_foreign_key "assignments", "projects"
 end

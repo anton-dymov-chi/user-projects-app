@@ -14,5 +14,11 @@ FactoryBot.define do
     name { Faker::Name.name }
     salary { Faker::Number.decimal }
     total_apportionment { Faker::Number.decimal }
+
+    trait :with_projects do
+      after :create do |employee|
+        create(:assignment, assignmentable: employee)
+      end
+    end
   end
 end
