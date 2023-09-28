@@ -39,7 +39,9 @@ RSpec.describe 'api/v1/employees', type: :request do
 
       response(404, 'not found') do
         let(:id) { 'invalid' }
-        run_test!
+        run_test! do |response|
+          expect(JSON.parse(response.body, symbolize_names: true)).to eq({ error: 'not_found', message: "Couldn't find Employee with 'id'=0" })
+        end
       end
     end
   end
