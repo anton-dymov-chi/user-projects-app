@@ -1,43 +1,44 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/employees', type: :request do
-
   path '/api/v1/employees' do
-    let(:employees) { create_list(:employee, 10) }
-
+    let!(:employees) { create_list(:employee, 10) }
+    let(:page) { 1 }
+    let(:per_page) { 5 }
+    let(:expected_result) { EmployeeSerializer.new(employees[0...5]).serializable_hash.to_json }
+    
     parameter name: :page, in: :query, type: :integer, description: 'page'
     parameter name: :per_page, in: :query, type: :integer, description: 'per page'
+    
     get('list employees') do
-      response(200, 'successful') do
+      tags 'Employees'
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      response(200, 'successful') do
+        run_test! do |response|
+          expect(JSON.parse(response.body)['data'].size).to eq(5)
+          expect(response.body).to eq(expected_result)
         end
-        run_test!
       end
     end
   end
 
   path '/api/v1/employees/{id}' do
-    # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
+    parameter name: 'id', in: :path, type: :integer, description: 'id'
+    
     get('show employee') do
-      response(200, 'successful') do
-        let(:employee) { create(:employee) }
-        let(:id) { employee.id }
+      tags 'Employees'
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      let!(:employee) { create(:employee) }
+      let(:id) { employee.id }
+      let(:expected_result) { EmployeeSerializer.new(employee).serializable_hash.to_json } 
+      response(200, 'successful') do
+        run_test! do |response|
+          expect(response.body).to eq(expected_result)  
         end
+      end
+
+      response(404, 'not found') do
+        let(:id) { 'invalid' }
         run_test!
       end
     end
