@@ -5,7 +5,7 @@ class Api::V1::EmployeesController < ApplicationController
   end
 
   def show
-    @employee = Employee.find(params[:id].to_i)
+    @employee = Employee.find(params[:id])
     render json: EmployeeSerializer.new(@employee).serializable_hash
   end
 end

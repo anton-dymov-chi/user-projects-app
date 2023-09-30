@@ -1,0 +1,159 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/assignments":
+    get:
+      summary: list assignments
+      tags:
+      - Assignments
+      parameters:
+      - name: page
+        in: query
+        description: page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create assingment
+      tags:
+      - Assignments
+      parameters: []
+      responses:
+        '200':
+          description: assignment created
+        '422':
+          description: cannot create assignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rnd_percentage:
+                  type: float
+                  description: RND percentage
+                months:
+                  type: integer
+                  description: Months
+                assignmentable_id:
+                  type: integer
+                  description: Employee/Contractor ID
+                assignmentable_type:
+                  type: string
+                  description: Employee or Contractor
+                project_id:
+                  type: integer
+                  description: Project ID
+              required:
+              - rnd_percentage
+              - months
+              - assignmentable_id
+              - assignmentable_type
+              - project_id
+  "/api/v1/assignments/{id}":
+    get:
+      summary: show assignment
+      tags:
+      - Assignments
+      parameters:
+      - name: id
+        in: path
+        description: Assignment ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: assignment found
+        '404':
+          description: not found
+    put:
+      summary: update assignment
+      tags:
+      - Assignments
+      parameters:
+      - name: id
+        in: path
+        description: Assignment ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: updated assignment
+        '404':
+          description: assignment not found
+        '422':
+          description: invalid updates assignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rnd_percentage:
+                  type: float
+                  description: RND percentage
+                months:
+                  type: integer
+                  description: Months
+                assignmentable_id:
+                  type: integer
+                  description: Employee/Contractor ID
+                assignmentable_type:
+                  type: string
+                  description: Employee or Contractor
+                project_id:
+                  type: integer
+                  description: Project ID
+  "/api/v1/employees":
+    parameters:
+    - name: page
+      in: query
+      description: page
+      schema:
+        type: integer
+    - name: per_page
+      in: query
+      description: per page
+      schema:
+        type: integer
+    get:
+      summary: list employees
+      tags:
+      - Employees
+      responses:
+        '200':
+          description: successful
+  "/api/v1/employees/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: show employee
+      tags:
+      - Employees
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

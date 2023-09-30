@@ -23,4 +23,36 @@ RSpec.describe Employee, type: :model do
       expect{ employee.update_total_apportionment }.to change(employee, :total_apportionment).from(10).to(100)
     end
   end
+
+  describe 'validation tests' do
+    let(:name) { 'Joe Doe' } 
+    let(:employee) { build(:employee, name: name) }
+
+    context "when name is valid" do
+      it 'has valid name' do
+        expect(employee).to be_valid
+      end
+    end
+    
+    context 'when name is not valid' do
+      let(:name) { '12312rf' }
+
+      it 'has invalid name' do
+        expect(employee).to be_invalid
+      end
+
+      it 'throw an error' do
+        employee.valid?
+        expect(employee.errors.full_messages[0]).to eq('Name Must contain only letters and at least 3 letters and no more than 40 letters')  
+      end
+    end
+
+    context 'when name is empty' do
+      let(:name) { nil }
+      
+      it 'has empty name' do
+        expect(employee).to be_invalid
+      end
+    end
+  end
 end

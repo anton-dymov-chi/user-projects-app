@@ -21,6 +21,10 @@ class Assignment < ApplicationRecord
   belongs_to :assignmentable, polymorphic: true
   belongs_to :project
 
+  validates :rnd_percentage, presence: true, numericality: { in: 0..100 }
+  validates :months, presence: true, numericality: { in: 1..12 }
+  validates :assignmentable_id, :assignmentable_type, :project_id, presence: true
+
   def update_total
     if months_changed? || rnd_percentage_changed?
       self.total = (months * rnd_percentage) / 12
