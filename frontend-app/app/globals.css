@@ -40,6 +40,24 @@
   --card-border-rgb: 131, 134, 135;
 }
 
+header {
+  background-color: black;
+  padding: 2rem 0;
+  text-align: center;
+}
+header > a {
+  color: white;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+header > a:hover {
+  text-decoration: underline;
+}
+
+.main {
+  background-color: #37308320;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
