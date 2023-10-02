@@ -123,6 +123,17 @@ RSpec.describe Assignment, type: :model do
     end
   end
 
+  describe 'scope tests' do
+    context 'when scope by_assignmentable' do
+      before { create_list(:assignment, 20) }
+      let(:employee) { create(:employee) }
+      let(:assignments) { create_list(:assignment, 10, assignmentable_id: employee.id, assignmentable_type: 'Employee') }
+      it 'return exactly assignments by assignmentable' do
+        expect(described_class.by_assignmentable(employee.id, 'Employee')).to eq(assignments)
+      end
+    end
+  end
+
   describe 'update assignment employee or contractor total after changing assignment' do
     let!(:employee) { create(:employee) }
     let!(:assignments) { create_list(:assignment, 10, total: 10.0, rnd_percentage: 10.0, assignmentable: employee) }

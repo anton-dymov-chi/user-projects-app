@@ -21,6 +21,8 @@ class Assignment < ApplicationRecord
   belongs_to :assignmentable, polymorphic: true
   belongs_to :project
 
+  scope :by_assignmentable, ->(id, type) { where(assignmentable_id: id, assignmentable_type: type) }
+
   validates :rnd_percentage, presence: true, numericality: { in: 0..100 }
   validates :months, presence: true, numericality: { in: 1..12 }
   validates :assignmentable_id, :assignmentable_type, :project_id, presence: true

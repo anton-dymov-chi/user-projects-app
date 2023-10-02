@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 async function getAssignments(assignmentableId: number, assignmentableType: string) {
   let queryString = `http://localhost:3000/api/v1/assignments?assignmentable_id=${assignmentableId}&&assignmentable_type=${assignmentableType}`
   const response = await fetch(queryString, {
@@ -35,7 +37,8 @@ export default async function Assingments({assignmentableId, assignmentableType}
         <tbody>
           {assignments.data.map((assignment: any) => (
             <tr key={assignment.id}>
-              <td>{assignment.id}</td>
+              <td>
+                <Link href={`/assignments/${assignment.id}`}>{assignment.id}</Link></td>
               <td>{assignment.attributes.total}</td>
               <td>{assignment.attributes.months}</td>
               <td>{assignment.attributes.rnd_percentage}</td>

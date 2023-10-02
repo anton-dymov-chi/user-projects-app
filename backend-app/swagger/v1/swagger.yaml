@@ -20,9 +20,19 @@ paths:
         description: per page
         schema:
           type: integer
+      - name: assignmentable_id
+        in: query
+        description: Assignmentable id
+        schema:
+          type: integer
+      - name: assignmentable_type
+        in: query
+        description: Assignmentable type
+        schema:
+          type: string
       responses:
         '200':
-          description: successful
+          description: success
     post:
       summary: create assingment
       tags:

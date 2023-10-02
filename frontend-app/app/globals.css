@@ -1,7 +1,7 @@
 header {
   background-color: black;
   padding: 2rem 0;
-  text-align: center;
+  text-align: left;
 }
 header > a {
   color: white;

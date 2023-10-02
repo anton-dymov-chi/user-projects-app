@@ -11,14 +11,35 @@ RSpec.describe 'api/v1/assignment', type: :request do
       let(:page) { 1 }
       let(:per_page) { 5 }
       let(:expected_result) { AssignmentSerializer.new(assignments[0...5]).serializable_hash.to_json }
+      let(:assignmentable_id) { nil }
+      let(:assignmentable_type) { nil } 
       
       parameter name: :page, in: :query, type: :integer, description: 'page'
       parameter name: :per_page, in: :query, type: :integer, description: 'per page'
+      parameter name: :assignmentable_id, in: :query, type: :integer, description: 'Assignmentable id'
+      parameter name: :assignmentable_type, in: :query, type: :string, description: 'Assignmentable type'
 
       response(200, 'successful') do
         run_test! do |response|
-            expect(JSON.parse(response.body)['data'].size).to eq(5)
+          expect(JSON.parse(response.body)['data'].size).to eq(5)
+          expect(response.body).to eq(expected_result)
+        end
+      end
+
+      context 'when assignmentable params has passed' do
+        let(:employee) { create(:employee) }
+        let(:assignmentable_id) { employee.id }
+        let(:assignmentable_type) { 'Employee' }
+        let(:page) { nil }
+        let(:per_page) { nil } 
+        let(:assignments) { create_list(:assignment, 10, assignmentable_id:, assignmentable_type:) }
+        let(:expected_result) { AssignmentSerializer.new(assignments).serializable_hash.to_json }
+
+        response(200, 'success') do
+          run_test! do |response|
             expect(response.body).to eq(expected_result)
+            expect(JSON.parse(response.body)['data'].size).to eq(10) 
+          end
         end
       end
     end
@@ -51,7 +72,10 @@ RSpec.describe 'api/v1/assignment', type: :request do
 
       response(422, 'cannot create assignment') do
         let(:assignment_attrs) { attributes_for(:assignment, project_id: project.id) }
-        let(:expected_error) { { error: 'record_invalid', message: 'Validation failed: Assignmentable must exist' } } 
+        let(:error_message) do 
+          "Validation failed: Assignmentable must exist, Assignmentable can't be blank, Assignmentable type can't be blank"
+        end
+        let(:expected_error) { { error: 'record_invalid', message: error_message } } 
 
         run_test! do |response|
           expect(JSON.parse(response.body, symbolize_names: true)).to eq(expected_error)
